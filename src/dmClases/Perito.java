@@ -23,6 +23,10 @@ public class Perito {
     private String password;
     private int rolUsuario;
 
+    public Perito(String nombre){
+        this.nombre = nombre;
+    }
+            
     public Perito(String usuario, String password) {
         this.usuario = usuario;
         this.password = password;
@@ -46,7 +50,7 @@ public class Perito {
     }
     
     
-    
+    //Metodo que valida el login del perito (Principal)
     public int validarLogin(){
         Perito peritoSelect;
         Conexion conn = new Conexion();
@@ -74,20 +78,49 @@ public class Perito {
         }
     }
     
+    //Metodo que registra un perito (Principal)
     public int registrarPerito(){
-        int resp; //0 correcto // 1 incorrecto
+        int resp; //0 correcto // 1 incorrecto // 3 perito registrado
+            if(validarPerito() == 0){
+                Conexion conn = new Conexion();
+                String sql = "INSERT INTO `perito`(`nombre`, `apellidoP`, `apellidoM`, "
+                    + "`cargo`, `usuario`, `password`, `rolUsuario`) "
+                    + "VALUES ("
+                    + "'"+this.nombre+"',"
+                    + "'"+this.apellidoP+"',"
+                    + "'"+this.apellidoM+"',"
+                    + "'"+this.cargo+"',"
+                    + "'"+this.usuario+"',"
+                    + "'"+this.password+"',"
+                    + ""+this.rolUsuario+")";
+            resp = conn.ejecutar(sql);
+            conn.cerrar();
+            } else {
+                resp =  3;
+            }
+        return resp;
+    }
+    
+    private int validarPerito(){
+        int resp;
         Conexion conn = new Conexion();
-        String sql = "INSERT INTO `perito`(`nombre`, `apellidoP`, `apellidoM`, "
-                + "`cargo`, `usuario`, `password`, `rolUsuario`) "
-                + "VALUES ("
-                + "'"+this.nombre+"',"
-                + "'"+this.apellidoP+"',"
-                + "'"+this.apellidoM+"',"
-                + "'"+this.cargo+"',"
-                + "'"+this.usuario+"',"
-                + "'"+this.password+"',"
-                + ""+this.rolUsuario+")";
-        resp = conn.ejecutar(sql);
+        ResultSet rs;
+        System.out.println(this.usuario);
+        String sql = "SELECT `usuario` FROM `perito` WHERE `usuario` = '"+this.usuario+"'";
+        rs = conn.consultar(sql);
+        try {
+            if(rs.next() == false){
+                System.out.println("vacio");
+                resp = 0;
+            } else {
+                resp = 1;
+            }
+        } catch(SQLException ex){
+            System.err.println(ex);
+            resp = 0;
+        } finally {
+            conn.cerrar();
+        }
         return resp;
     }
     
