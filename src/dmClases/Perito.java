@@ -7,6 +7,8 @@ package dmClases;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import servertransito.Conexion;
 
 /**
@@ -23,6 +25,9 @@ public class Perito {
     private String password;
     private int rolUsuario;
 
+    public Perito(){
+    }
+    
     public Perito(String nombre){
         this.nombre = nombre;
     }
@@ -47,6 +52,16 @@ public class Perito {
         this.usuario = usuario;
         this.password = password;
         this.rolUsuario = rol;
+    }
+
+    public Perito(int id, String nombre, String apellidoP, String apellidoM, String cargo, String usuario, int rolUsuario) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
+        this.cargo = cargo;
+        this.usuario = usuario;
+        this.rolUsuario = rolUsuario;
     }
     
     
@@ -124,6 +139,48 @@ public class Perito {
         return resp;
     }
     
+    //Metodo que recupera todos los peritos (Principal)
+    public List<String> getTodos(){
+        List<String> list = new ArrayList<>();
+        Conexion conn = new Conexion();
+        ResultSet rs;
+        String sql = "SELECT `idPerito`,`nombre`,`apellidoP`,`apellidoM`,`cargo`,`usuario`,`rolUsuario` FROM `perito`";
+        rs = conn.consultar(sql);
+        try{
+            while(rs.next()){
+                String perito = ""+rs.getInt(1)+":"
+                        +rs.getString(2)+":"
+                        +rs.getString(3)+":"
+                        +rs.getString(4)+":"
+                        +rs.getString(5)+":"
+                        +rs.getString(6)+":"
+                        +rs.getInt(7);
+                list.add(perito);
+            }
+        } catch(SQLException e){
+            System.err.println(e);
+        } finally {
+            conn.cerrar();
+        }
+        return list;
+    }
+
+    public int actualizarPerito(){
+        int resp;  //0 correcto // 1 incorrecto
+        Conexion conn = new Conexion();
+        String sql = "UPDATE `perito` SET "
+                + "`nombre`='"+this.nombre+"',"
+                + "`apellidoP`='"+this.apellidoP+"',"
+                + "`apellidoM`='"+this.apellidoM+"',"
+                + "`cargo`='"+this.cargo+"',"
+                + "`usuario`='"+this.usuario+"',"
+                + "`rolUsuario`="+this.rolUsuario+" "
+                + "WHERE `idPerito` = " + this.id;
+        resp = conn.ejecutar(sql);
+        conn.cerrar();
+        return resp;
+    }
+            
 //-------------------------------------GETTERS AND SETTERS----------------------
     // <editor-fold defaultstate="collapsed" desc=" Getters and Setters">
     /**

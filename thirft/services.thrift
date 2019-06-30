@@ -13,4 +13,16 @@ service Servicios{
 		6:string password,
 		7:i32 rol
 	)
+
+	list<string> RecuperarPeritos()
+
+	i32 ActualizarPerito(
+		1:i32 idPerito,
+		2:string nombre,
+		3:string apellidoP,
+		4:string apellidoM,
+		5:string cargo,
+		6:string usuario,
+		7:i32 rol
+	) 
 }

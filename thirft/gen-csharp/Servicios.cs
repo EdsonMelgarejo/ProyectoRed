@@ -19,6 +19,8 @@ public partial class Servicios {
   public interface ISync {
     int IniciarSesion(string usuario, string password);
     int RegistrarPerito(string nombre, string apellidoP, string apellidoM, string cargo, string usuario, string password, int rol);
+    List<string> RecuperarPeritos();
+    int ActualizarPerito(int idPerito, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, int rol);
   }
 
   public interface Iface : ISync {
@@ -29,6 +31,14 @@ public partial class Servicios {
     #if SILVERLIGHT
     IAsyncResult Begin_RegistrarPerito(AsyncCallback callback, object state, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, string password, int rol);
     int End_RegistrarPerito(IAsyncResult asyncResult);
+    #endif
+    #if SILVERLIGHT
+    IAsyncResult Begin_RecuperarPeritos(AsyncCallback callback, object state);
+    List<string> End_RecuperarPeritos(IAsyncResult asyncResult);
+    #endif
+    #if SILVERLIGHT
+    IAsyncResult Begin_ActualizarPerito(AsyncCallback callback, object state, int idPerito, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, int rol);
+    int End_ActualizarPerito(IAsyncResult asyncResult);
     #endif
   }
 
@@ -240,6 +250,154 @@ public partial class Servicios {
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "RegistrarPerito failed: unknown result");
     }
 
+    
+    #if SILVERLIGHT
+    
+    public IAsyncResult Begin_RecuperarPeritos(AsyncCallback callback, object state)
+    {
+      return send_RecuperarPeritos(callback, state);
+    }
+
+    public List<string> End_RecuperarPeritos(IAsyncResult asyncResult)
+    {
+      oprot_.Transport.EndFlush(asyncResult);
+      return recv_RecuperarPeritos();
+    }
+
+    #endif
+
+    public List<string> RecuperarPeritos()
+    {
+      #if SILVERLIGHT
+      var asyncResult = Begin_RecuperarPeritos(null, null);
+      return End_RecuperarPeritos(asyncResult);
+
+      #else
+      send_RecuperarPeritos();
+      return recv_RecuperarPeritos();
+
+      #endif
+    }
+    #if SILVERLIGHT
+    public IAsyncResult send_RecuperarPeritos(AsyncCallback callback, object state)
+    {
+      oprot_.WriteMessageBegin(new TMessage("RecuperarPeritos", TMessageType.Call, seqid_));
+      RecuperarPeritos_args args = new RecuperarPeritos_args();
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      return oprot_.Transport.BeginFlush(callback, state);
+    }
+
+    #else
+
+    public void send_RecuperarPeritos()
+    {
+      oprot_.WriteMessageBegin(new TMessage("RecuperarPeritos", TMessageType.Call, seqid_));
+      RecuperarPeritos_args args = new RecuperarPeritos_args();
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+    #endif
+
+    public List<string> recv_RecuperarPeritos()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      RecuperarPeritos_result result = new RecuperarPeritos_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "RecuperarPeritos failed: unknown result");
+    }
+
+    
+    #if SILVERLIGHT
+    
+    public IAsyncResult Begin_ActualizarPerito(AsyncCallback callback, object state, int idPerito, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, int rol)
+    {
+      return send_ActualizarPerito(callback, state, idPerito, nombre, apellidoP, apellidoM, cargo, usuario, rol);
+    }
+
+    public int End_ActualizarPerito(IAsyncResult asyncResult)
+    {
+      oprot_.Transport.EndFlush(asyncResult);
+      return recv_ActualizarPerito();
+    }
+
+    #endif
+
+    public int ActualizarPerito(int idPerito, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, int rol)
+    {
+      #if SILVERLIGHT
+      var asyncResult = Begin_ActualizarPerito(null, null, idPerito, nombre, apellidoP, apellidoM, cargo, usuario, rol);
+      return End_ActualizarPerito(asyncResult);
+
+      #else
+      send_ActualizarPerito(idPerito, nombre, apellidoP, apellidoM, cargo, usuario, rol);
+      return recv_ActualizarPerito();
+
+      #endif
+    }
+    #if SILVERLIGHT
+    public IAsyncResult send_ActualizarPerito(AsyncCallback callback, object state, int idPerito, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, int rol)
+    {
+      oprot_.WriteMessageBegin(new TMessage("ActualizarPerito", TMessageType.Call, seqid_));
+      ActualizarPerito_args args = new ActualizarPerito_args();
+      args.IdPerito = idPerito;
+      args.Nombre = nombre;
+      args.ApellidoP = apellidoP;
+      args.ApellidoM = apellidoM;
+      args.Cargo = cargo;
+      args.Usuario = usuario;
+      args.Rol = rol;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      return oprot_.Transport.BeginFlush(callback, state);
+    }
+
+    #else
+
+    public void send_ActualizarPerito(int idPerito, string nombre, string apellidoP, string apellidoM, string cargo, string usuario, int rol)
+    {
+      oprot_.WriteMessageBegin(new TMessage("ActualizarPerito", TMessageType.Call, seqid_));
+      ActualizarPerito_args args = new ActualizarPerito_args();
+      args.IdPerito = idPerito;
+      args.Nombre = nombre;
+      args.ApellidoP = apellidoP;
+      args.ApellidoM = apellidoM;
+      args.Cargo = cargo;
+      args.Usuario = usuario;
+      args.Rol = rol;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+    #endif
+
+    public int recv_ActualizarPerito()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      ActualizarPerito_result result = new ActualizarPerito_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ActualizarPerito failed: unknown result");
+    }
+
   }
   public class Processor : TProcessor {
     public Processor(ISync iface)
@@ -247,6 +405,8 @@ public partial class Servicios {
       iface_ = iface;
       processMap_["IniciarSesion"] = IniciarSesion_Process;
       processMap_["RegistrarPerito"] = RegistrarPerito_Process;
+      processMap_["RecuperarPeritos"] = RecuperarPeritos_Process;
+      processMap_["ActualizarPerito"] = ActualizarPerito_Process;
     }
 
     protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -329,6 +489,62 @@ public partial class Servicios {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("RegistrarPerito", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void RecuperarPeritos_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      RecuperarPeritos_args args = new RecuperarPeritos_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      RecuperarPeritos_result result = new RecuperarPeritos_result();
+      try
+      {
+        result.Success = iface_.RecuperarPeritos();
+        oprot.WriteMessageBegin(new TMessage("RecuperarPeritos", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("RecuperarPeritos", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void ActualizarPerito_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      ActualizarPerito_args args = new ActualizarPerito_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      ActualizarPerito_result result = new ActualizarPerito_result();
+      try
+      {
+        result.Success = iface_.ActualizarPerito(args.IdPerito, args.Nombre, args.ApellidoP, args.ApellidoM, args.Cargo, args.Usuario, args.Rol);
+        oprot.WriteMessageBegin(new TMessage("ActualizarPerito", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("ActualizarPerito", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -1010,6 +1226,629 @@ public partial class Servicios {
 
     public override string ToString() {
       StringBuilder __sb = new StringBuilder("RegistrarPerito_result(");
+      bool __first = true;
+      if (__isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class RecuperarPeritos_args : TBase
+  {
+
+    public RecuperarPeritos_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("RecuperarPeritos_args");
+        oprot.WriteStructBegin(struc);
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("RecuperarPeritos_args(");
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class RecuperarPeritos_result : TBase
+  {
+    private List<string> _success;
+
+    public List<string> Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+    }
+
+    public RecuperarPeritos_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.List) {
+                {
+                  Success = new List<string>();
+                  TList _list0 = iprot.ReadListBegin();
+                  for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                  {
+                    string _elem2;
+                    _elem2 = iprot.ReadString();
+                    Success.Add(_elem2);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("RecuperarPeritos_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.List;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            {
+              oprot.WriteListBegin(new TList(TType.String, Success.Count));
+              foreach (string _iter3 in Success)
+              {
+                oprot.WriteString(_iter3);
+              }
+              oprot.WriteListEnd();
+            }
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("RecuperarPeritos_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class ActualizarPerito_args : TBase
+  {
+    private int _idPerito;
+    private string _nombre;
+    private string _apellidoP;
+    private string _apellidoM;
+    private string _cargo;
+    private string _usuario;
+    private int _rol;
+
+    public int IdPerito
+    {
+      get
+      {
+        return _idPerito;
+      }
+      set
+      {
+        __isset.idPerito = true;
+        this._idPerito = value;
+      }
+    }
+
+    public string Nombre
+    {
+      get
+      {
+        return _nombre;
+      }
+      set
+      {
+        __isset.nombre = true;
+        this._nombre = value;
+      }
+    }
+
+    public string ApellidoP
+    {
+      get
+      {
+        return _apellidoP;
+      }
+      set
+      {
+        __isset.apellidoP = true;
+        this._apellidoP = value;
+      }
+    }
+
+    public string ApellidoM
+    {
+      get
+      {
+        return _apellidoM;
+      }
+      set
+      {
+        __isset.apellidoM = true;
+        this._apellidoM = value;
+      }
+    }
+
+    public string Cargo
+    {
+      get
+      {
+        return _cargo;
+      }
+      set
+      {
+        __isset.cargo = true;
+        this._cargo = value;
+      }
+    }
+
+    public string Usuario
+    {
+      get
+      {
+        return _usuario;
+      }
+      set
+      {
+        __isset.usuario = true;
+        this._usuario = value;
+      }
+    }
+
+    public int Rol
+    {
+      get
+      {
+        return _rol;
+      }
+      set
+      {
+        __isset.rol = true;
+        this._rol = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool idPerito;
+      public bool nombre;
+      public bool apellidoP;
+      public bool apellidoM;
+      public bool cargo;
+      public bool usuario;
+      public bool rol;
+    }
+
+    public ActualizarPerito_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                IdPerito = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Nombre = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                ApellidoP = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                ApellidoM = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.String) {
+                Cargo = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.String) {
+                Usuario = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.I32) {
+                Rol = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("ActualizarPerito_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.idPerito) {
+          field.Name = "idPerito";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(IdPerito);
+          oprot.WriteFieldEnd();
+        }
+        if (Nombre != null && __isset.nombre) {
+          field.Name = "nombre";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Nombre);
+          oprot.WriteFieldEnd();
+        }
+        if (ApellidoP != null && __isset.apellidoP) {
+          field.Name = "apellidoP";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ApellidoP);
+          oprot.WriteFieldEnd();
+        }
+        if (ApellidoM != null && __isset.apellidoM) {
+          field.Name = "apellidoM";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ApellidoM);
+          oprot.WriteFieldEnd();
+        }
+        if (Cargo != null && __isset.cargo) {
+          field.Name = "cargo";
+          field.Type = TType.String;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Cargo);
+          oprot.WriteFieldEnd();
+        }
+        if (Usuario != null && __isset.usuario) {
+          field.Name = "usuario";
+          field.Type = TType.String;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Usuario);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.rol) {
+          field.Name = "rol";
+          field.Type = TType.I32;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Rol);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("ActualizarPerito_args(");
+      bool __first = true;
+      if (__isset.idPerito) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IdPerito: ");
+        __sb.Append(IdPerito);
+      }
+      if (Nombre != null && __isset.nombre) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Nombre: ");
+        __sb.Append(Nombre);
+      }
+      if (ApellidoP != null && __isset.apellidoP) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ApellidoP: ");
+        __sb.Append(ApellidoP);
+      }
+      if (ApellidoM != null && __isset.apellidoM) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ApellidoM: ");
+        __sb.Append(ApellidoM);
+      }
+      if (Cargo != null && __isset.cargo) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Cargo: ");
+        __sb.Append(Cargo);
+      }
+      if (Usuario != null && __isset.usuario) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Usuario: ");
+        __sb.Append(Usuario);
+      }
+      if (__isset.rol) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Rol: ");
+        __sb.Append(Rol);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class ActualizarPerito_result : TBase
+  {
+    private int _success;
+
+    public int Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+    }
+
+    public ActualizarPerito_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.I32) {
+                Success = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("ActualizarPerito_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          field.Name = "Success";
+          field.Type = TType.I32;
+          field.ID = 0;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Success);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("ActualizarPerito_result(");
       bool __first = true;
       if (__isset.success) {
         if(!__first) { __sb.Append(", "); }
