@@ -25,8 +25,7 @@ public class Perito {
     private String password;
     private int rolUsuario;
 
-    public Perito(){
-    }
+    public Perito(){}
     
     public Perito(String nombre){
         this.nombre = nombre;
@@ -54,7 +53,8 @@ public class Perito {
         this.rolUsuario = rol;
     }
 
-    public Perito(int id, String nombre, String apellidoP, String apellidoM, String cargo, String usuario, int rolUsuario) {
+    public Perito(int id, String nombre, String apellidoP, String apellidoM, 
+            String cargo, String usuario, int rolUsuario) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoP = apellidoP;
@@ -77,7 +77,7 @@ public class Perito {
             peritoSelect = new Perito(rs.getString(1), rs.getString(2), rs.getInt(3));
             
             if(this.password.equals(peritoSelect.getPassword())){
-                if(peritoSelect.getRolUsuario() == -1){
+                if(peritoSelect.getRolUsuario() == 1){
                     return -1; //Usuario Administrador
                 } else {
                     return 0; //Usuario estandar
@@ -181,7 +181,7 @@ public class Perito {
         return resp;
     }
             
-//-------------------------------------GETTERS AND SETTERS----------------------
+    
     // <editor-fold defaultstate="collapsed" desc=" Getters and Setters">
     /**
      * @return the id

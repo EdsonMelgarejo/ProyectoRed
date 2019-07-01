@@ -43,4 +43,12 @@ public class ServiciosImpl implements Servicios.Iface{
         resp = perito.actualizarPerito();
         return resp;
     }
+
+    @Override
+    public List<String> RecuperarReportes() throws TException {
+        List<String> reportes = new ArrayList<>();
+        Reporte rep = new Reporte();
+        reportes = rep.recuperarReportes();
+        return reportes;
+    }
 }
