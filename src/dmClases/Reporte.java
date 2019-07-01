@@ -30,6 +30,10 @@ public class Reporte {
     private int dictaminado;
     
     public Reporte(){}
+    
+    public Reporte(int id){
+        this.idReporte = id;
+    }
 
     public Reporte(int idReporte, String titulo, String ciudad, String fechaHora, 
             String descripcion, String direccion, int idConductor1, String placas, int idConductor2, int dictaminado) {
@@ -156,6 +160,13 @@ public class Reporte {
         }
         conn.cerrar();
         return list;
+    }
+    
+    public int dictaminarReporte(int dictamen){
+        Conexion conn = new Conexion();
+        String sql = "UPDATE `reporte` SET `dictaminado`= "+dictamen+" WHERE `idReporte` = "+ this.idReporte;
+        int resp = conn.ejecutar(sql);
+        return resp;
     }
     
     // <editor-fold defaultstate="collapsed" desc=" Getters and Setters">

@@ -51,4 +51,11 @@ public class ServiciosImpl implements Servicios.Iface{
         reportes = rep.recuperarReportes();
         return reportes;
     }
+
+    @Override
+    public int DictaminarReporte(int idReporte, int dictamen) throws TException {
+        Reporte reporte = new Reporte(idReporte);
+        reporte.dictaminarReporte(dictamen);
+        return 0;
+    }
 }
